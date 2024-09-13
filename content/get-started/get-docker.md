@@ -1,58 +1,22 @@
----
-description: Download and install Docker on the platform of your choice, including
-  Mac, Linux, or Windows.
-keywords: install docker, docker download, download docker, docker installation, how
-  to install docker, get docker, docker locally
-title: Get Docker
-weight: 10
-aliases:
- - /install/
- - /install/overview/
- - /installation/
- - /get-docker/
----
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim
 
-Docker is an open platform for developing, shipping, and running applications.
+# Set the working directory
+WORKDIR /app
 
-Docker allows you to separate your applications from your infrastructure so you
-can deliver software quickly. With Docker, you can manage your infrastructure in
-the same ways you manage your applications. 
+# Install dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-By taking advantage of Docker’s
-methodologies for shipping, testing, and deploying code quickly, you can
-significantly reduce the delay between writing code and running it in production.
+# Copy the current directory contents into the container
+COPY . .
 
-You can download and install Docker on multiple platforms. Refer to the following
-section and choose the best installation path for you.
+# Expose port 5000 for the Flask app
+EXPOSE 5000
 
-> **Docker Desktop terms**
->
-> Commercial use of Docker Desktop in larger enterprises (more than 250
-> employees OR more than $10 million USD in annual revenue) requires a [paid
-> subscription](https://www.docker.com/pricing/).
+# Define environment variable
+ENV FLASK_ENV=development
 
-{{< card
-  title="Docker Desktop for Mac"
-  description="A native application using the macOS sandbox security model that delivers all Docker tools to your Mac."
-  link="/desktop/install/mac-install/"
-  icon="/assets/images/apple_48.svg" >}}
+# Run the Flask app
+CMD ["python", "app.py"]
 
-<br>
-
-{{< card
-  title="Docker Desktop for Windows"
-  description="A native Windows application that delivers all Docker tools to your Windows computer."
-  link="/desktop/install/windows-install/"
-  icon="/assets/images/windows_48.svg" >}}
-
-<br>
-
-{{< card
-  title="Docker Desktop for Linux"
-  description="A native Linux application that delivers all Docker tools to your Linux computer."
-  link="/desktop/install/linux/"
-  icon="/assets/images/linux_48.svg" >}}
-
-> [!NOTE]
->
-> If you're looking for information on how to install Docker Engine, see [Docker Engine installation overview](/engine/install/).
